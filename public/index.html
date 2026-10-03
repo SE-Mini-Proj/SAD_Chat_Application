@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Chat Application | Team 5 SAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- AUTH MODAL CONTAINER -->
+  <div id="auth-overlay" class="overlay">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-logo">💬</div>
+        <h2>SAD Real-Time Chat</h2>
+        <p>Socket-based Messaging System (Team 5)</p>
+      </div>
+
+      <!-- TAB TOGGLE -->
+      <div class="auth-tabs">
+        <button id="tab-login" class="tab-btn active">Sign In</button>
+        <button id="tab-register" class="tab-btn">Create Account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="form-login" class="auth-form active">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="user@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+        </div>
+        <div id="login-error" class="form-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="form-register" class="auth-form">
+        <div class="form-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username" placeholder="johndoe" required>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="user@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password (min 6 chars)</label>
+          <input type="password" id="reg-password" placeholder="••••••••" required minlength="6">
+        </div>
+        <div id="reg-error" class="form-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN CHAT APP INTERFACE -->
+  <div id="chat-app" class="app-layout hidden">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="user-badge">
+          <div class="avatar" id="current-avatar">U</div>
+          <div class="user-info">
+            <h4 id="current-username">Username</h4>
+            <span class="status-indicator online">Online</span>
+          </div>
+        </div>
+        <button id="btn-logout" class="btn-icon" title="Logout">🚪</button>
+      </div>
+
+      <!-- CHAT ROOMS LIST -->
+      <div class="section-title">
+        <span>Chat Rooms</span>
+        <button id="btn-new-room" class="btn-icon-small" title="Create Room">+</button>
+      </div>
+      <div id="rooms-list" class="rooms-list">
+        <!-- Dynamically loaded rooms -->
+      </div>
+
+      <!-- ONLINE USERS PRESENCE LIST -->
+      <div class="section-title">
+        <span>Active Users</span>
+        <span id="online-count-badge" class="badge">0</span>
+      </div>
+      <div id="online-users-list" class="users-list">
+        <!-- Dynamically loaded online users -->
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT PANE -->
+    <main class="chat-pane">
+      <header class="chat-header">
+        <div class="room-details">
+          <h3 id="active-room-name">General Chat</h3>
+          <p id="active-room-desc">Default public room for general discussion</p>
+        </div>
+        <div class="connection-status">
+          <span id="socket-status-dot" class="dot connected"></span>
+          <span id="socket-status-text">Connected via WSS</span>
+        </div>
+      </header>
+
+      <!-- MESSAGES CONTAINER -->
+      <div id="messages-container" class="messages-container">
+        <!-- Message bubbles dynamically appended here -->
+      </div>
+
+      <!-- TYPING INDICATOR BAR -->
+      <div id="typing-bar" class="typing-bar hidden">
+        <span class="typing-dots"><span></span><span></span><span></span></span>
+        <span id="typing-text">Someone is typing...</span>
+      </div>
+
+      <!-- MESSAGE COMPOSER -->
+      <form id="message-form" class="composer">
+        <input type="text" id="message-input" placeholder="Type a message... (Press Enter to send)" autocomplete="off" required>
+        <button type="submit" class="btn btn-send">Send 🚀</button>
+      </form>
+    </main>
+  </div>
+
+  <!-- CREATE ROOM MODAL -->
+  <div id="modal-create-room" class="overlay hidden">
+    <div class="modal-card">
+      <h3>Create New Chat Room</h3>
+      <form id="form-create-room">
+        <div class="form-group">
+          <label for="room-name">Room Name</label>
+          <input type="text" id="room-name" placeholder="e.g. Architecture Discussion" required>
+        </div>
+        <div class="form-group">
+          <label for="room-desc">Description</label>
+          <input type="text" id="room-desc" placeholder="Brief description...">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="room-private">
+          <label for="room-private">Private Room (Requires Invite Code)</label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="btn-cancel-room" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

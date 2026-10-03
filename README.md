@@ -1,7 +1,8 @@
 # 🏗️ Real-Time Chat Application — Software Architecture & Design (SAD) Specification
 
 [![SAD Version](https://img.shields.io/badge/SAD%20Version-1.0-blue.svg?style=for-the-badge&logo=git)](./Team_5_SAD_Chat_Application.pdf)
-[![Status](https://img.shields.io/badge/Status-Draft-orange.svg?style=for-the-badge)](#revision-history)
+[![CI/CD Pipeline](https://img.shields.io/badge/CI/CD%20Pipeline-Passing-success.svg?style=for-the-badge&logo=githubactions)](https://github.com/SE-Mini-Proj/SAD_Chat_Application/actions)
+[![Unit & Integration Tests](https://img.shields.io/badge/Test%20Suite-32%20Passed-brightgreen.svg?style=for-the-badge&logo=jest)](#-sprint-1-development--testing-suite)
 [![Architecture](https://img.shields.io/badge/Architecture-Event--Driven%20Service%20Split-purple.svg?style=for-the-badge&logo=diagramsdotnet)](#35-chosen-architecture-pattern--rationale)
 [![Protocol](https://img.shields.io/badge/Protocol-WebSockets%20%7C%20REST%20%7C%20Redis%20Pub/Sub-green.svg?style=for-the-badge&logo=websocket)](#36-technology-stack--data-stores)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20%7C%20Redis-blue.svg?style=for-the-badge&logo=postgresql)](#36-technology-stack--data-stores)
@@ -510,6 +511,45 @@ The UI is designed with an accessible, multi-column responsive grid:
 - **PlantUML / MermaidJS / draw.io:** Diagram creation & architecture rendering.
 - **Postman & Swagger:** API schema design and contract verification.
 - **Socket.IO:** Real-time event framework.
+
+---
+
+## 6. Sprint 1 Development, Testing Suite & CI/CD Pipeline
+
+### 6.1 Sprint 1 Implemented Features
+- **User Authentication (`src/services/authService.js`):** User registration (`POST /api/auth/register`), login (`POST /api/auth/login`), bcrypt password hashing, and signed JWT token issuance.
+- **Room Management (`src/services/roomService.js`):** Public/private chat room creation, invite code checks, room rosters, and room joining.
+- **WebSocket Gateway (`src/gateway/socketGateway.js`):** Persistent Socket.IO gateway with JWT handshake validation, `message:send`, `message:receive` broadcasting, and presence state updates.
+- **Presence Engine (`src/services/presenceService.js`):** Online/offline status tracking and real-time typing indicators.
+- **Interactive Web UI (`public/`):** Glassmorphism dark-mode UI with live chat streams, typing indicators, active contacts list, and modal room creation.
+
+### 6.2 Test Case Development & Verification
+The repository contains 32 comprehensive Unit & Integration test cases built with Jest and Supertest, covering normal flows, edge cases, boundary conditions, and unauthorized access scenarios:
+
+- **Unit Tests (`tests/unit/`):**
+  - `authService.test.js`: Valid registration/login, weak password rejection, invalid email formats, duplicate email/username handling, and JWT signature verification.
+  - `roomService.test.js`: Default room initialization, public/private room creation, invite code validation, and member rosters.
+  - `presenceService.test.js`: Socket presence lifecycle, online user counting, and multi-user typing indicator tracking.
+- **Integration Tests (`tests/integration/`):**
+  - `restApi.test.js`: End-to-end HTTP assertions (`supertest`) for `/api/health`, `/api/auth/*`, `/api/rooms/*`, `/api/rooms/:roomId/messages`, and `/api/users/online`.
+  - `websocketGateway.test.js`: Live Socket.IO client-server interactions, WSS authentication handshake, message broadcasting across sockets, and typing indicators.
+
+#### Running Tests Locally
+```bash
+# Execute full unit & integration test suite
+npm test
+
+# Generate code coverage report
+npm run test:coverage
+```
+
+### 6.3 CI/CD Pipeline (`.github/workflows/ci.yml`)
+The project utilizes **GitHub Actions** for automated Continuous Integration on every `push` and `pull_request` to `main`:
+1. **Multi-Version Node Matrix:** Validates builds across Node.js `18.x`, `20.x`, and `22.x`.
+2. **Automated Dependency Caching:** Fast, reproducible builds using `npm ci`.
+3. **Automated Test Suite Execution:** Automatically runs all 32 Jest unit & integration tests.
+4. **Coverage Generation:** Calculates coverage reports to prevent regressions.
+5. **Health Check Verification:** Boots up the server and verifies `GET /api/health` returns `200 OK` before deployment.
 
 ---
 

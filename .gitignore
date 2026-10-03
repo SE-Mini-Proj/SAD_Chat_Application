@@ -1,3 +1,16 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment & Secrets
+.env
+*.env.local
+
+# Testing & Coverage
+coverage/
+
+# Logs & Temporary files
+*.log
 extracted_srs.txt
 docx_dump.txt
 tables_markdown.txt
