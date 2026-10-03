@@ -1,0 +1,7 @@
+extracted_srs.txt
+docx_dump.txt
+tables_markdown.txt
+sad_dump.txt
+TEST_REPO/
+*.tmp
+.DS_Store
