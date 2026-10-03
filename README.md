@@ -1,8 +1,8 @@
 # 🏗️ Real-Time Chat Application — Software Architecture & Design (SAD) Specification
 
 [![SAD Version](https://img.shields.io/badge/SAD%20Version-1.0-blue.svg?style=for-the-badge&logo=git)](./Team_5_SAD_Chat_Application.pdf)
-[![Status](https://img.shields.io/badge/Status-Draft-orange.svg?style=for-the-badge)](#-revision-history)
-[![Architecture](https://img.shields.io/badge/Architecture-Event--Driven%20Service%20Split-purple.svg?style=for-the-badge&logo=diagramsdotnet)](#35-chosen-architecture-pattern-and-rationale)
+[![Status](https://img.shields.io/badge/Status-Draft-orange.svg?style=for-the-badge)](#revision-history)
+[![Architecture](https://img.shields.io/badge/Architecture-Event--Driven%20Service%20Split-purple.svg?style=for-the-badge&logo=diagramsdotnet)](#35-chosen-architecture-pattern--rationale)
 [![Protocol](https://img.shields.io/badge/Protocol-WebSockets%20%7C%20REST%20%7C%20Redis%20Pub/Sub-green.svg?style=for-the-badge&logo=websocket)](#36-technology-stack--data-stores)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20%7C%20Redis-blue.svg?style=for-the-badge&logo=postgresql)](#36-technology-stack--data-stores)
 [![Document PDF](https://img.shields.io/badge/Download-SAD%20PDF-red.svg?style=for-the-badge&logo=adobe-acrobat-reader)](./Team_5_SAD_Chat_Application.pdf)
@@ -53,28 +53,28 @@
   - [1.4 Definitions, Acronyms and Abbreviations](#14-definitions-acronyms-and-abbreviations)
 - [2. Document Overview](#2-document-overview)
   - [2.1 How to Use This Document](#21-how-to-use-this-document)
-  - [2.2 Related Deliverables \& Documents](#22-related-deliverables--documents)
-- [3. Architecture \& System Topography](#3-architecture--system-topography)
-  - [3.1 Architectural Goals \& Constraints](#31-architectural-goals--constraints)
-  - [3.2 Stakeholders \& Key Concerns](#32-stakeholders--key-concerns)
+  - [2.2 Related Deliverables & Documents](#22-related-deliverables--documents)
+- [3. Architecture & System Topography](#3-architecture--system-topography)
+  - [3.1 Architectural Goals & Constraints](#31-architectural-goals--constraints)
+  - [3.2 Stakeholders & Key Concerns](#32-stakeholders--key-concerns)
   - [3.3 UML Component Architecture Diagram](#33-uml-component-architecture-diagram)
   - [3.4 Component Descriptions](#34-component-descriptions)
-  - [3.5 Chosen Architecture Pattern \& Rationale](#35-chosen-architecture-pattern-and-rationale)
-  - [3.6 Technology Stack \& Data Stores](#36-technology-stack--data-stores)
-  - [3.7 Risk Register \& Mitigations](#37-risk-register--mitigations)
+  - [3.5 Chosen Architecture Pattern & Rationale](#35-chosen-architecture-pattern--rationale)
+  - [3.6 Technology Stack & Data Stores](#36-technology-stack--data-stores)
+  - [3.7 Risk Register & Mitigations](#37-risk-register--mitigations)
   - [3.8 Requirements Traceability Matrix (RTM Mapping)](#38-requirements-traceability-matrix-rtm-mapping)
-  - [3.9 Security Architecture \& STRIDE Threat Model](#39-security-architecture--stride-threat-model)
+  - [3.9 Security Architecture & STRIDE Threat Model](#39-security-architecture--stride-threat-model)
 - [4. Detailed Design Artifacts](#4-detailed-design-artifacts)
   - [4.1 Design Overview](#41-design-overview)
   - [4.2 Dynamic Behavioral Sequence Diagrams](#42-dynamic-behavioral-sequence-diagrams)
-  - [4.3 API Design \& Interface Specifications](#43-api-design--interface-specifications)
-  - [4.4 Cross-Cutting Concerns: Error Handling, Logging \& Monitoring](#44-cross-cutting-concerns-error-handling-logging--monitoring)
+  - [4.3 API Design & Interface Specifications](#43-api-design--interface-specifications)
+  - [4.4 Cross-Cutting Concerns: Error Handling, Logging & Monitoring](#44-cross-cutting-concerns-error-handling-logging--monitoring)
   - [4.5 User Experience (UX) Architecture](#45-user-experience-ux-architecture)
-  - [4.6 Open Issues \& Architectural Roadmap](#46-open-issues--architectural-roadmap)
+  - [4.6 Open Issues & Architectural Roadmap](#46-open-issues--architectural-roadmap)
 - [5. Appendices](#5-appendices)
   - [5.1 Glossary](#51-glossary)
-  - [5.2 References \& Standards](#52-references--standards)
-  - [5.3 Tools \& Technologies](#53-tools--technologies)
+  - [5.2 References & Standards](#52-references--standards)
+  - [5.3 Tools & Technologies](#53-tools--technologies)
 
 ---
 
@@ -118,9 +118,9 @@ This SAD serves as the authoritative blueprint for translating Software Requirem
 - **DevOps & QA:** Reference [Section 4.4](#44-cross-cutting-concerns-error-handling-logging--monitoring) for structured logging formats, health metrics, and error codes.
 
 ### 2.2 Related Deliverables & Documents
-- 📄 **Software Requirements Specification (SRS):** [Chat Application SRS](./Chat_Application_SRS.pdf)
 - 📄 **Software Architecture Document (PDF):** [Team 5 SAD Document](./Team_5_SAD_Chat_Application.pdf)
-- 📄 **Software Test Plan (STP):** [Team 5 TEST Document](./Team_5_TEST_Chat_Application.pdf)
+- 📄 **Software Requirements Specification (SRS):** [SE-Mini-Proj / SRS](https://github.com/SE-Mini-Proj/SRS)
+- 📄 **Software Test Plan (STP):** [SE-Mini-Proj / TEST](https://github.com/SE-Mini-Proj/TEST)
 
 ---
 
@@ -177,9 +177,9 @@ graph TB
     end
 
     subgraph Data_Layer ["Data & Persistence Layer"]
-        REDIS[("(Cache / Pub-Sub) Redis")]
-        PG[(Database PostgreSQL)]
-        S3[("Object Storage (S3 / Blob)")]
+        REDIS[("Redis Cache & Pub-Sub")]
+        PG[("PostgreSQL Database")]
+        S3[("S3 Object Storage")]
     end
 
     UI -->|HTTPS / REST| NGINX
@@ -222,7 +222,7 @@ graph TB
 
 ---
 
-### 3.5 Chosen Architecture Pattern and Rationale
+### 3.5 Chosen Architecture Pattern & Rationale
 
 ```
 +-----------------------------------------------------------------------------+
@@ -256,15 +256,15 @@ mindmap
       WebSocket Client API
     Backend REST Layer
       Express.js / Node.js
-      Python Flask (Alternative)
+      Python Flask
     Real-Time Layer
       Node.js Socket.IO / ws
       Redis Pub/Sub Bus
     Databases & Caching
-      PostgreSQL (Relational Store)
-      Redis (Presence & Cache)
+      PostgreSQL
+      Redis
     Storage & Push
-      S3 Compatible Object Store
+      S3 Compatible Storage
       Firebase Cloud Messaging
 ```
 
@@ -488,7 +488,7 @@ The UI is designed with an accessible, multi-column responsive grid:
 
 - [ ] **End-to-End Encryption (E2EE):** Implementation of Signal Protocol for private direct messages.
 - [ ] **WebRTC Media Support:** Signalling extension for zero-latency peer-to-peer voice and video calls.
-- [ ] **Threaded Message Replies:** Sub-conversaion schema updates in PostgreSQL.
+- [ ] **Threaded Message Replies:** Sub-conversation schema updates in PostgreSQL.
 - [ ] **Auto-Scaling Gateway Groups:** Dynamic Kubernetes HPA rules based on active socket connections.
 
 ---
